@@ -72,28 +72,8 @@ func ResourceDataSource() *schema.Resource {
 			},
 
 			"json_data": {
-				Type:     schema.TypeList,
+				Type:     schema.TypeMap,
 				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"auth_type": {
-							Type:     schema.TypeString,
-							Required: true,
-						},
-						"default_region": {
-							Type:     schema.TypeString,
-							Required: true,
-						},
-						"custom_metrics_namespaces": {
-							Type:     schema.TypeString,
-							Optional: true,
-						},
-						"assume_role_arn": {
-							Type:     schema.TypeString,
-							Optional: true,
-						},
-					},
-				},
 			},
 
 			"secure_json_data": {
@@ -230,18 +210,9 @@ func makeDataSource(d *schema.ResourceData) (*gapi.DataSource, error) {
 		BasicAuth:         d.Get("basic_auth_enabled").(bool),
 		BasicAuthUser:     d.Get("basic_auth_username").(string),
 		BasicAuthPassword: d.Get("basic_auth_password").(string),
-		JSONData:          makeJSONData(d),
+		JSONData:          d.Get("json_data").(map[string]interface{}),
 		SecureJSONData:    makeSecureJSONData(d),
 	}, err
-}
-
-func makeJSONData(d *schema.ResourceData) gapi.JSONData {
-	return gapi.JSONData{
-		AuthType:                d.Get("json_data.0.auth_type").(string),
-		DefaultRegion:           d.Get("json_data.0.default_region").(string),
-		CustomMetricsNamespaces: d.Get("json_data.0.custom_metrics_namespaces").(string),
-		AssumeRoleArn:           d.Get("json_data.0.assume_role_arn").(string),
-	}
 }
 
 func makeSecureJSONData(d *schema.ResourceData) gapi.SecureJSONData {

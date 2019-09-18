@@ -58,16 +58,16 @@ func TestAccDataSource_basicCloudwatch(t *testing.T) {
 						"grafana_data_source.test_cloudwatch", "type", "cloudwatch",
 					),
 					resource.TestCheckResourceAttr(
-						"grafana_data_source.test_cloudwatch", "json_data.0.custom_metrics_namespaces", "foo",
+						"grafana_data_source.test_cloudwatch", "json_data.custom_metrics_namespaces", "foo",
 					),
 					resource.TestCheckResourceAttr(
-						"grafana_data_source.test_cloudwatch", "json_data.0.assume_role_arn", "arn:aws:sts::*:assumed-role/*/*",
+						"grafana_data_source.test_cloudwatch", "json_data.assume_role_arn", "arn:aws:sts::*:assumed-role/*/*",
 					),
 					resource.TestCheckResourceAttr(
-						"grafana_data_source.test_cloudwatch", "json_data.0.auth_type", "keys",
+						"grafana_data_source.test_cloudwatch", "json_data.auth_type", "keys",
 					),
 					resource.TestCheckResourceAttr(
-						"grafana_data_source.test_cloudwatch", "json_data.0.default_region", "us-east-1",
+						"grafana_data_source.test_cloudwatch", "json_data.default_region", "us-east-1",
 					),
 					resource.TestCheckResourceAttr(
 						"grafana_data_source.test_cloudwatch", "secure_json_data.0.access_key", "123",
@@ -133,7 +133,7 @@ resource "grafana_data_source" "test_cloudwatch" {
   type = "cloudwatch"
   name = "terraform-acc-test-cloudwatch"
 
-  json_data {
+  json_data = {
     default_region            = "us-east-1"
     auth_type                 = "keys"
     assume_role_arn           = "arn:aws:sts::*:assumed-role/*/*"
